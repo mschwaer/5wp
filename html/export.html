@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+// Info von https://stackoverflow.com/questions/69319199/how-do-take-inputted-values-from-a-html-form-and-convert-to-a-csv
+//
+//
+
+
+function getClassDAta(){
+    let columnNames = ""
+    let formValues = ""
+    let radiosArray = document.getElementsByClassName("radios");
+    for(i=0;i<radiosArray.length;i++){
+        if (radiosArray[i].checked) {
+            console.log(radiosArray[i].name + " " + radiosArray[i].value )
+            columnNames +=  radiosArray[i].name + ",";
+            formValues += radiosArray[i].value + ",";
+        }
+
+        
+    }
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += columnNames.substring(0,columnNames.length -1) + "\r\n";
+    csvContent += formValues.substring(0,formValues.length -1) + "\r\n";
+       // Set encoded csvContent as `href` attribute and also set download attribute to set the file name
+    saveContentCsv(csvContent,"#downloadRef2");
+
+    //radiosArray.forEach((element) => {
+    //    console.log(element)
+    //});
+}
+
+
+function saveContentCsv(content,qSelector){
+    const encodedUri = encodeURI(content);
+    const link = document.querySelector(qSelector);
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "my-form-data.csv");
+}
+
+function downloadCSV(){
+    //
+    const formEl = document.forms.userForm;
+    const formData = new FormData(formEl);
+    const formObj = Object.fromEntries(formData);
+    const columnNames = Object.keys(formObj).map(key => key.toUpperCase()).join(",");
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += columnNames + "\r\n";
+    const formValues = Object.values(formObj).map(val => val.replaceAll(',', ' ')).join(",");
+    csvContent += formValues + "\r\n";
+       // Set encoded csvContent as `href` attribute and also set download attribute to set the file name
+    saveContentCsv(csvContent,"#downloadRef");
+}
+    </script>
+
+    <form id="userForm">
+        <div><label>Name<input type="text" name="name"></label></div>
+        <div><label>Age<input type="number" name="age"></label></div>
+        <div>
+            Gender
+            <label>Male<input type="radio" name="gender" value="male"></label>
+            <label>Female<input type="radio" name="gender" value="female"></label>
+        </div>
+        <div><label>Address<textarea name="address"></textarea></label></div>
+        <table>
+            <tr><td>hungrig</td><td><input type="radio" name="hungrig" value="2"><input type="radio" name="hungrig" value="1"><input type="radio" name="hungrig" value="3"></td></tr>
+        </table>
+        <button onclick="downloadCSV()">
+            <a id="downloadRef"style="text-decoration:none" href="#">Create CSV</a>
+        </button>
+    </form>
+
+    <div>
+        A
+        <label>1<input type="radio" name="a" class="radios" value="1" checked></label>
+        <label>2<input type="radio" name="a" class="radios" value="2"></label>
+        <label>3<input type="radio" name="a" class="radios" value="3"></label>
+        <br>B
+        <label>1<input type="radio" name="b" class="radios" value="1" checked></label>
+        <label>2<input type="radio" name="b" class="radios" value="2"></label>
+        <br>C
+        <label>1<input type="radio" name="c" class="radios" value="1" checked></label>
+        <label>2<input type="radio" name="c" class="radios" value="2"></label>
+        <br>D
+        <label>1<input type="radio" name="d" class="radios" value="1" checked></label>
+        <label>2<input type="radio" name="d" class="radios" value="2"></label>
+
+        <br>
+        <button onclick="getClassDAta()">
+            <a id="downloadRef2"style="text-decoration:none" href="#">Create CSV2</a>
+        </button>
+    </div>
+</body>
+</html>

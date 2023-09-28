@@ -103,9 +103,25 @@
             stackedLine.update();
         }
 
+
+        function createRadioButtons(){
+            let radioString =""
+            document.getElementById("radiolist").innerHTML = "";
+            labelsArr.forEach((element)=>{
+                radioString += "<br>"+element + "<Br>";
+                [-3,-2,-1,0,1,2,3].forEach((value) => {
+                    radioString += "<input type=radio name="+element+" value="+value+">"
+                })
+                
+            })
+            document.getElementById("radiolist").innerHTML = radioString;
+        }
+
       </script>
 
       <button onclick="updateChart()"> update chart</button>
       <button onclick="clearChart()"> clear chart</button>
+      <button onclick="createRadioButtons()"> create radiobuttons</button>
+      <div id="radiolist"></div>
 </body>
 </html>

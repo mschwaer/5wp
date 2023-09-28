@@ -15,14 +15,17 @@
       <script>
         const ctx = document.getElementById('myChart');
 
-        
+        // Definiere die Datenspeicher für meine Anforderungen
+        //1. Array mit den Kategorien
         let labelsArr=['Klugheit',"Faulheit","Schönheit","Intelligenz","Empathie","Charm","Humor"];
+        //2. Array der die Werte für drei unterschiedliche Auswertungen speichert
         let ausArray = [
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0],
         ];
 
+        // Werte für den Array initialisieren
         updateArray();
 
         const data = {
@@ -63,31 +66,40 @@
             }
         });
 
+        // Funktion liefert einen Wert zwischen min und max zurück
         function ran(){
             min = 0;
             max = 100;
             return Math.floor(Math.random() * (max - min) ) + min;
         }
 
+        // Konfigurierte Arrays mit Zufallszahlen befüllen
         function updateArray(){
             for(const i in Array(0,1,2)){
                 ausArray[i] = [ran(),ran(),ran(),ran(),ran(),ran(),ran()];
             }
         }
 
+        // Chart löschen
         function clearChart(){
             for(const i in Array(0,1,2)){
+                //Array Werte auf 0 zurücksetzen
                 ausArray[i]  = [0,0,0,0,0,0,0];
+                // Werte der Liste an Chart übergeben
                 stackedLine.data.datasets[i].data = ausArray[i];
             }        
+            //chart neu zeichnen
             stackedLine.update();    
         } 
 
         function updateChart() {
+            // Array mit Werte befüllen
             updateArray();
             for(const i in Array(0,1,2)){
+                // Chart mit Werten des Array befüllen
                 stackedLine.data.datasets[i].data = ausArray[i];
             }
+            //Chart updaten
             stackedLine.update();
         }
 

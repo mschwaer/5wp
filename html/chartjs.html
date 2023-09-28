@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+        const ctx = document.getElementById('myChart');
+
+        
+        let labelsArr=['Klugheit',"Faulheit","Schönheit","Intelligenz","Empathie","Charm","Humor"];
+        let ausArray = [
+            [0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0],
+        ];
+
+        updateArray();
+
+        const data = {
+            labels: labelsArr,
+            datasets: [
+            {
+                axis: 'y',
+                label: 'My First Dataset',
+                data: ausArray[0],
+                fill: false
+            },
+            {
+                axis: 'y',
+                label: 'My First Dataset',
+                data: ausArray[1],
+                fill: false
+            },
+            {
+                axis: 'y',
+                label: 'My First Dataset',
+                data: ausArray[2],
+                fill: false
+            },
+
+        ]
+        };
+
+        const stackedLine = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function ran(){
+            min = 0;
+            max = 100;
+            return Math.floor(Math.random() * (max - min) ) + min;
+        }
+
+        function updateArray(){
+            for(const i in Array(0,1,2)){
+                ausArray[i] = [ran(),ran(),ran(),ran(),ran(),ran(),ran()];
+            }
+        }
+
+        function clearChart(){
+            for(const i in Array(0,1,2)){
+                ausArray[i]  = [0,0,0,0,0,0,0];
+                stackedLine.data.datasets[i].data = ausArray[i];
+            }        
+            stackedLine.update();    
+        } 
+
+        function updateChart() {
+            updateArray();
+            for(const i in Array(0,1,2)){
+                stackedLine.data.datasets[i].data = ausArray[i];
+            }
+            stackedLine.update();
+        }
+
+      </script>
+
+      <button onclick="updateChart()"> update chart</button>
+      <button onclick="clearChart()"> clear chart</button>
+</body>
+</html>
